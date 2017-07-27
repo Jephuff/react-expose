@@ -1,0 +1,59 @@
+{
+  "name": "react-expose",
+  "version": "0.0.2",
+  "description": "exposes react component children properties",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest",
+    "prepublish": "mkdir -p dist && babel src/index.js -o dist/index.js && npm run browser-bundle",
+    "browser-bundle": "browserify src/browser.js -o dist/browser.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "Jephuff/react-expose"
+  },
+  "babel": {
+    "presets": [
+      "stage-0",
+      "latest",
+      "react"
+    ]
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify"
+      ]
+    ]
+  },
+  "keywords": [
+    "react",
+    "higher-order",
+    "components",
+    "utilities",
+    "composition",
+    "passthrough",
+    "bypass"
+  ],
+  "author": "Jeffrey Burt",
+  "license": "ISC",
+  "peerDependencies": {
+    "react": "^15.0.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-jest": "^19.0.0",
+    "babel-preset-latest": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "babelify": "^7.3.0",
+    "browserify": "^14.3.0",
+    "enzyme": "^2.8.2",
+    "jest": "^19.0.2",
+    "react": "^15.0.1",
+    "react-dom": "^15.5.4",
+    "react-test-renderer": "^15.5.4",
+    "sinon": "^2.1.0"
+  },
+  "dependencies": {}
+}
