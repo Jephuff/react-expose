@@ -78,3 +78,5 @@ const reactExpose = ({ exposeKeys = [], target, passthrough = [] }) => {
 
   return Component => expose(Component, true);
 };
+
+export default reactExpose;
