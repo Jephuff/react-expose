@@ -1,6 +1,6 @@
 {
   "name": "react-expose",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "exposes react component children properties",
   "main": "dist/index.js",
   "scripts": {
