@@ -7,6 +7,7 @@ exposes react component children properties
 ```js
 expose({
   exposeKeys: Array<string>,
-  componentTypes: Array<ReactComponent>
+  target: ReactComponent,
+  passthrough: Array<ReactComponent>
 })(ReactElement;)
 ```

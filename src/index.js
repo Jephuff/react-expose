@@ -1,45 +1,75 @@
 import React from "react";
 
-export default ({ exposeKeys = [], componentTypes = [] }) => {
-  return function expose(Component) {
-    if (!componentTypes.includes(Component)) return Component;
+function getValue(source, key) {
+  if (source) {
+    if (typeof source[key] === "function") {
+      return source[key].bind(source);
+    } else {
+      return source[key];
+    }
+  } else {
+    return undefined;
+  }
+}
+
+const reactExpose = ({ exposeKeys = [], target, passthrough = [] }) => {
+  if (!target && passthrough.length === 0) {
+    console.warn(
+      "no target component or passthrogh components passed in. Doing nothing"
+    );
+    return c => c;
+  }
+
+  function expose(Component, exposeStatic) {
+    if (
+      target === Component ||
+      (passthrough.length && !passthrough.includes(Component))
+    )
+      return Component;
 
     class NewComponent extends Component {
       render() {
         const rendered = super.render.call({
-          ...this,
+          ...Object.entries(this).reduce((acc, [k, v]) => {
+            acc[k] = v;
+            return acc;
+          }, {}),
           props: {
             ...this.props,
             children: React.Children.map(this.props.children, child => ({
               ...child,
-              type: expose(child.type),
+              type: expose(child.type)
             }))
           }
         });
 
-        return (!rendered || typeof rendered !== 'object') ? rendered : (
-          React.cloneElement(rendered, {
-            ...rendered.props,
-            ref: c => (this.child = c),
-          })
-        );
+        return !rendered || typeof rendered !== "object"
+          ? rendered
+          : React.cloneElement(rendered, {
+              ...rendered.props,
+              ref: c => (this.child = c)
+            });
       }
     }
 
     exposeKeys.forEach(key => {
       Object.defineProperty(NewComponent.prototype, key, {
-        get: function () {
-          if (this.child && this.child[key]) {
-            if (typeof this.child[key] === 'function') {
-              return this.child[key].bind(this.child);
-            } else {
-              return this.child[key];
-            }
-          }
+        get: function() {
+          return getValue(this.child, key);
         }
       });
+
+      if (exposeStatic && target) {
+        Object.defineProperty(NewComponent, key, {
+          get: function() {
+            return getValue(target, key);
+          }
+        });
+      }
     });
 
     return NewComponent;
-  };
+  }
+
+  return Component => expose(Component, true);
 };
