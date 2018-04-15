@@ -20,6 +20,11 @@ const reactExpose = ({ exposeKeys = [], target, passthrough = [] }) => {
     return c => c;
   }
 
+  if (exposeKeys.length === 0) {
+    console.warn("no keys passed in to expose. Doing nothing");
+    return c => c;
+  }
+
   function expose(Component, exposeStatic) {
     if (
       target === Component ||

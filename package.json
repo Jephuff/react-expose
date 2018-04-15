@@ -12,13 +12,6 @@
     "type": "git",
     "url": "Jephuff/react-expose"
   },
-  "babel": {
-    "presets": [
-      "stage-0",
-      "latest",
-      "react"
-    ]
-  },
   "browserify": {
     "transform": [
       [
